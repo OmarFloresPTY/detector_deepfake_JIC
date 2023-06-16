@@ -1,15 +1,11 @@
 import tkinter as tk
 import customtkinter as ctk
-from PIL import Image
+from PIL import Image,ImageTk
 import requests
 import io
 from io import BytesIO
 import cv2
 import urllib.request
-import matplotlib
-matplotlib.use('TkAgg') 
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 import tensorflow as tf 
 
@@ -33,7 +29,7 @@ class VentanaPrincipal():
         self.btn_dfURL.pack()
         self.btn_dfIMG = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE IMAGEN",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_img)
         self.btn_dfIMG.pack()
-        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),state= "disable",command=self.load_model)
+        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),state= "disable",command=self.mostrar_imagen)
         self.btn_dfEVAL.pack()
         #Bucle repetetivo para ejecutar el código tkinter
         self.window.mainloop()
@@ -68,35 +64,33 @@ class VentanaPrincipal():
             self.frame_url.pack_forget()
             self.ban_url_controller = False
     
-    def categorizar_modelo(self,url,modelo):
-        self.respuesta = requests.get(url)
-        self.img = Image.open(BytesIO(self.respuesta.content))
-        self.img = np.array(self.img).astype(float)/255
-        self.img = cv2.resize(self.img,(224,224))
-        self.prediccion = modelo.predict(self.img.reshape(-1,224,224,3))
-        return np.argmax(self.prediccion[0],axis=-1)
+    def categorizar(self, url, modelo):
+        respuesta = requests.get(url)
+        img = Image.open(BytesIO(respuesta.content))
+        img = np.array(img).astype(float)/255
+        img = cv2.resize(img,(224,224))
+        prediccion = modelo.predict(img.reshape(-1,224,224,3))
+        return np.argmax(prediccion[0],axis=-1)
     
-    def load_model(self):
-        self.modelo = tf.keras.models.load_model('./Modelo_Guardado')
-        self.url = 'https://cdn.mos.cms.futurecdn.net/xwk66FPAKm63fXsgJSoucn-1200-80.jpg' 
-        self.response = requests.get(self.url)
-        self.imagen_data = self.response.content
-        self.imagen = Image.open(io.BytesIO(self.imagen_data))
-        self.prediccion = self.categorizar_modelo(self.url,self.modelo)
+    def mostrar_imagen(self):
+        modelo = tf.keras.models.load_model('./Modelo_Guardado')
+        url = 'https://cdn.mos.cms.futurecdn.net/xwk66FPAKm63fXsgJSoucn-1200-80.jpg'
+        prediccion = self.categorizar(url, modelo)
+        response = requests.get(url)
+        imagen_data = response.content
+        imagen = Image.open(io.BytesIO(imagen_data))
         
-        fig, ax = plt.subplots()
-        ax.imshow(self.imagen)
-        ax.set_title('Predicción: {}'.format(self.prediccion))
-        ax.axis('off')
-        canvas = FigureCanvasTkAgg(fig, master=self.window)
-        canvas.draw()
-
-        # Ubicar el objeto tkinter en la ventana
-        canvas.get_tk_widget().pack()
-
-
-
-
+        #Añadir imagen en Tkinter
+        tk_image = ImageTk.PhotoImage(imagen)
+        label_imagen = tk.Label(self.window, image=tk_image)
+        label_imagen.image = tk_image  # Guardar una referencia para evitar que la imagen se borre
+        label_imagen.pack()
+        if prediccion == 0:
+            label_prediccion = tk.Label(self.window, text="Detectado como Real")
+        else:
+            label_prediccion = tk.Label(self.window, text="Detectado como DeepFake")
+        label_prediccion.pack()
+        self.window.mainloop()
 
 if __name__ == "__main__":
     app = VentanaPrincipal()
