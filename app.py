@@ -28,7 +28,7 @@ class VentanaPrincipal():
         #Creando los widgets de la aplicación:
         #Widgets label principal
         self.lb_TITLE = ctk.CTkLabel(self.window,text='PROTOTIPO DETECTOR DEEPFAKE',text_color="white",font=("Arial",30,"bold"))
-        self.lb_TITLE.pack(pady=10)
+        self.lb_TITLE.pack(pady=(10,40))
         #Widgets buttom principales
         self.btn_dfURL = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE URL",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_url)
         self.btn_dfURL.pack(pady=7)
@@ -36,6 +36,17 @@ class VentanaPrincipal():
         self.btn_dfIMG.pack(pady=7)
         #self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
         #self.btn_dfEVAL.pack()
+        #self.func_img_home()
+        #Imagen ilustrativa de fondo
+        self.home_img_path = "./utils/home.jpg"
+        self.home_img = Image.open(self.home_img_path)
+        self.home_img = self.home_img.resize((1000, 600))
+        # Añadir imagen en Tkinter
+        self.tk_home_img = ImageTk.PhotoImage(self.home_img)
+        self.label_home_img = tk.Label(self.window, image=self.tk_home_img)
+        self.label_home_img.pack(pady=(90,0))
+        # Configurar el borde a 0 para eliminarlo
+        self.label_home_img.config(borderwidth=0)
         #Bucle repetetivo para ejecutar el código tkinter
         self.window.mainloop()
     
@@ -49,13 +60,12 @@ class VentanaPrincipal():
             self.txtbox_URL.pack()
             self.btn_dfEVAL_URL = ctk.CTkButton(self.frame_url,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_URL)
             self.btn_dfEVAL_URL.pack()
+            self.fun_img_home_refresh()
             self.ban_url_controller = True
         
         if self.ban_img_controller == True:
             self.frame_img.pack_forget()
             self.ban_img_controller = False
-
-        
 
     def func_verify_img(self):
         if self.ban_img_controller == False:
@@ -67,6 +77,7 @@ class VentanaPrincipal():
             self.btn_addIMG.pack()
             self.btn_dfEVAL_IMG = ctk.CTkButton(self.frame_img,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
             self.btn_dfEVAL_IMG.pack()
+            self.fun_img_home_refresh()
             self.ban_img_controller = True
         
         if self.ban_url_controller == True:
@@ -85,6 +96,7 @@ class VentanaPrincipal():
         return np.argmax(self.prediccion[0],axis=-1)
     
     def mostrar_imagen_URL(self):
+        self.label_home_img.pack_forget()
         if self.ban_show_img_URL == True:
             self.frame_img_show_model_URL.pack_forget()
             self.ban_show_img_URL = False
@@ -120,25 +132,26 @@ class VentanaPrincipal():
         return np.argmax(self.prediccion[0],axis=-1)
     
     def mostrar_imagen_IMG(self):
+        self.label_home_img.pack_forget()
         if self.ban_show_img_IMG == False:
             if self.frame_img_show_model_IMG is not None:
                 self.frame_img_show_model_IMG.destroy()
                 self.ban_show_img_IMG = False
 
-            #self.frame_img_show_model_IMG = ctk.CTkFrame(self.frame_img,fg_color='transparent')
-            self.frame_img_show_model_IMG = ctk.CTkScrollableFrame(self.frame_img,width=1920,height=1000,fg_color='transparent')
+            self.frame_img_show_model_IMG = ctk.CTkFrame(self.frame_img,fg_color='transparent',width=1000)
+            #self.frame_img_show_model_IMG = ctk.CTkScrollableFrame(self.frame_img,width=1920,height=1000,fg_color='transparent')
             self.frame_img_show_model_IMG.pack()
 
             self.modelo = tf.keras.models.load_model('./Modelo_Guardado')
             self.image_path = self.ruta_archivo
             self.imagen = Image.open(self.image_path)
+            self.imagen = self.imagen.resize((1000,600))
             self.prediccion = self.categorizar_IMG(self.imagen,self.modelo)
 
             #Añadir imagen en Tkinter
-            self.tk_image = ImageTk.PhotoImage(self.imagen)
+            self.tk_image = ImageTk.PhotoImage(self.imagen,width=10,height=10)
             self.label_imagen = tk.Label(self.frame_img_show_model_IMG, image=self.tk_image)
             self.label_imagen.image = self.tk_image  # Guardar una referencia para evitar que la imagen se borre
-            #self.label_imagen.pack()
             if self.prediccion == 0:
                 self.label_prediccion = ctk.CTkLabel(self.frame_img_show_model_IMG, text="DETECTADO COMO REAL",text_color="#24FF00",font=("Arial",20,"bold"))
             else:
@@ -146,7 +159,22 @@ class VentanaPrincipal():
             
             self.label_prediccion.pack()
             self.label_imagen.pack()
-            self.ban_show_img_IMG = True
+            #self.ban_show_img_IMG == True
+
+    def func_img_home(self):
+        self.home_img_path = "./utils/home.jpg"
+        self.home_img = Image.open(self.home_img_path)
+        self.home_img = self.home_img.resize((1000, 600))
+        # Añadir imagen en Tkinter
+        self.tk_home_img = ImageTk.PhotoImage(self.home_img)
+        self.label_home_img = tk.Label(self.window, image=self.tk_home_img)
+        self.label_home_img.pack(pady=(90,0))
+        # Configurar el borde a 0 para eliminarlo
+        self.label_home_img.config(borderwidth=0)
+    
+    def fun_img_home_refresh(self):
+        self.label_home_img.pack_forget()
+        self.func_img_home()
 
 if __name__ == "__main__":
     app = VentanaPrincipal()
