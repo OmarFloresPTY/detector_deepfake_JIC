@@ -1,5 +1,18 @@
 import tkinter as tk
 import customtkinter as ctk
+from PIL import Image
+import requests
+import io
+from io import BytesIO
+import cv2
+import urllib.request
+import matplotlib
+matplotlib.use('TkAgg') 
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
+import tensorflow as tf 
+
 class VentanaPrincipal():
     def __init__(self) -> None:
         self.ban_url_controller = False
@@ -20,7 +33,7 @@ class VentanaPrincipal():
         self.btn_dfURL.pack()
         self.btn_dfIMG = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE IMAGEN",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_img)
         self.btn_dfIMG.pack()
-        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),state= "disable")
+        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),state= "disable",command=self.load_model)
         self.btn_dfEVAL.pack()
         #Bucle repetetivo para ejecutar el código tkinter
         self.window.mainloop()
@@ -55,5 +68,35 @@ class VentanaPrincipal():
             self.frame_url.pack_forget()
             self.ban_url_controller = False
     
+    def categorizar_modelo(self,url,modelo):
+        self.respuesta = requests.get(url)
+        self.img = Image.open(BytesIO(self.respuesta.content))
+        self.img = np.array(self.img).astype(float)/255
+        self.img = cv2.resize(self.img,(224,224))
+        self.prediccion = modelo.predict(self.img.reshape(-1,224,224,3))
+        return np.argmax(self.prediccion[0],axis=-1)
+    
+    def load_model(self):
+        self.modelo = tf.keras.models.load_model('./Modelo_Guardado')
+        self.url = 'https://cdn.mos.cms.futurecdn.net/xwk66FPAKm63fXsgJSoucn-1200-80.jpg' 
+        self.response = requests.get(self.url)
+        self.imagen_data = self.response.content
+        self.imagen = Image.open(io.BytesIO(self.imagen_data))
+        self.prediccion = self.categorizar_modelo(self.url,self.modelo)
+        
+        fig, ax = plt.subplots()
+        ax.imshow(self.imagen)
+        ax.set_title('Predicción: {}'.format(self.prediccion))
+        ax.axis('off')
+        canvas = FigureCanvasTkAgg(fig, master=self.window)
+        canvas.draw()
+
+        # Ubicar el objeto tkinter en la ventana
+        canvas.get_tk_widget().pack()
+
+
+
+
+
 if __name__ == "__main__":
     app = VentanaPrincipal()
