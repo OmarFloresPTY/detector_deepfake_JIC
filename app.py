@@ -21,19 +21,19 @@ class VentanaPrincipal():
         #Inicializando la ventana
         self.window = ctk.CTk()
         #Creando el titulo de la aplicación
-        self.window.title('Jornada de Iniciación Cientifica')
+        self.window.title('V.1.0.-Jornada de Iniciación Científica 2023')
         #Inicializando el tamaño de la aplicación
         self.window.geometry('1000x600')
 
         #Creando los widgets de la aplicación:
         #Widgets label principal
         self.lb_TITLE = ctk.CTkLabel(self.window,text='PROTOTIPO DETECTOR DEEPFAKE',text_color="white",font=("Arial",30,"bold"))
-        self.lb_TITLE.pack()
+        self.lb_TITLE.pack(pady=10)
         #Widgets buttom principales
         self.btn_dfURL = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE URL",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_url)
-        self.btn_dfURL.pack()
+        self.btn_dfURL.pack(pady=7)
         self.btn_dfIMG = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE IMAGEN",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_img)
-        self.btn_dfIMG.pack()
+        self.btn_dfIMG.pack(pady=7)
         #self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
         #self.btn_dfEVAL.pack()
         #Bucle repetetivo para ejecutar el código tkinter
@@ -47,31 +47,32 @@ class VentanaPrincipal():
             self.lb_URL.pack()
             self.txtbox_URL = ctk.CTkEntry(self.frame_url,width=600)
             self.txtbox_URL.pack()
+            self.btn_dfEVAL_URL = ctk.CTkButton(self.frame_url,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_URL)
+            self.btn_dfEVAL_URL.pack()
             self.ban_url_controller = True
         
         if self.ban_img_controller == True:
             self.frame_img.pack_forget()
             self.ban_img_controller = False
 
-        self.btn_dfEVAL_URL = ctk.CTkButton(self.frame_url,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_URL)
-        self.btn_dfEVAL_URL.pack()
+        
 
     def func_verify_img(self):
         if self.ban_img_controller == False:
             self.frame_img = ctk.CTkFrame(self.window)
             self.frame_img.pack()
-            self.lb_IMG = ctk.CTkLabel(self.frame_img,text='LA IMAGEN DEBE ESTAR EN FORMATO .JPG',text_color="red",font=("Arial",15,"bold"))
+            self.lb_IMG = ctk.CTkLabel(self.frame_img,text='LA IMAGEN DEBE ESTAR EN FORMATO .JPG .PNG',text_color="red",font=("Arial",15,"bold"))
             self.lb_IMG.pack()
-            self.btn_addIMG = ctk.CTkButton(self.frame_img,text="SELECCIONAR ARCHIVO",text_color="white",width=600,height=100,font=("Arial",15,"bold"),command=self.obtener_ruta_IMG)
+            self.btn_addIMG = ctk.CTkButton(self.frame_img,text="SELECCIONAR ARCHIVO",fg_color="#4F4F4F",text_color="white",width=600,height=100,font=("Arial",15,"bold"),command=self.obtener_ruta_IMG)
             self.btn_addIMG.pack()
+            self.btn_dfEVAL_IMG = ctk.CTkButton(self.frame_img,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
+            self.btn_dfEVAL_IMG.pack()
             self.ban_img_controller = True
         
         if self.ban_url_controller == True:
             self.frame_url.pack_forget()
             self.ban_url_controller = False
-        self.btn_dfEVAL_IMG = ctk.CTkButton(self.frame_img,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
-        self.btn_dfEVAL_IMG.pack()
-        
+       
     def obtener_ruta_IMG(self):
         self.ruta_archivo = filedialog.askopenfilename()
 
@@ -89,7 +90,7 @@ class VentanaPrincipal():
             self.ban_show_img_URL = False
 
         if self.ban_show_img_URL == False:
-            self.frame_img_show_model_URL = ctk.CTkFrame(self.window)
+            self.frame_img_show_model_URL = ctk.CTkScrollableFrame(self.frame_url,width=1920,height=1000,fg_color='transparent')
             self.frame_img_show_model_URL.pack()
 
             self.modelo = tf.keras.models.load_model('./Modelo_Guardado')
@@ -103,12 +104,13 @@ class VentanaPrincipal():
             self.tk_image = ImageTk.PhotoImage(self.imagen)
             self.label_imagen = tk.Label(self.frame_img_show_model_URL, image=self.tk_image)
             self.label_imagen.image = self.tk_image  # Guardar una referencia para evitar que la imagen se borre
-            self.label_imagen.pack()
+            #self.label_imagen.pack()
             if self.prediccion == 0:
-                self.label_prediccion = tk.Label(self.frame_img_show_model_URL, text="Detectado como Real")
+                self.label_prediccion = ctk.CTkLabel(self.frame_img_show_model_URL, text="DETECTADO COMO REAL",text_color="#24FF00",font=("Arial",20,"bold"))
             else:
-                self.label_prediccion = tk.Label(self.frame_img_show_model_URL, text="Detectado como DeepFake")
+                self.label_prediccion = ctk.CTkLabel(self.frame_img_show_model_URL, text="DETECTADO COMO DEEPFAKE",text_color="#24FF00",font=("Arial",20,"bold"))
             self.label_prediccion.pack()
+            self.label_imagen.pack()
             self.ban_show_img_URL = True
 
     def categorizar_IMG(self, imagen, modelo):
@@ -123,7 +125,8 @@ class VentanaPrincipal():
                 self.frame_img_show_model_IMG.destroy()
                 self.ban_show_img_IMG = False
 
-            self.frame_img_show_model_IMG = ctk.CTkFrame(self.window)
+            #self.frame_img_show_model_IMG = ctk.CTkFrame(self.frame_img,fg_color='transparent')
+            self.frame_img_show_model_IMG = ctk.CTkScrollableFrame(self.frame_img,width=1920,height=1000,fg_color='transparent')
             self.frame_img_show_model_IMG.pack()
 
             self.modelo = tf.keras.models.load_model('./Modelo_Guardado')
@@ -135,13 +138,15 @@ class VentanaPrincipal():
             self.tk_image = ImageTk.PhotoImage(self.imagen)
             self.label_imagen = tk.Label(self.frame_img_show_model_IMG, image=self.tk_image)
             self.label_imagen.image = self.tk_image  # Guardar una referencia para evitar que la imagen se borre
-            self.label_imagen.pack()
+            #self.label_imagen.pack()
             if self.prediccion == 0:
-                self.label_prediccion = tk.Label(self.frame_img_show_model_IMG, text="Detectado como Real")
+                self.label_prediccion = ctk.CTkLabel(self.frame_img_show_model_IMG, text="DETECTADO COMO REAL",text_color="#24FF00",font=("Arial",20,"bold"))
             else:
-                self.label_prediccion = tk.Label(self.frame_img_show_model_IMG, text="Detectado como DeepFake")
+                self.label_prediccion = ctk.CTkLabel(self.frame_img_show_model_IMG, text="DETECTADO COMO DEEPFAKE",text_color="#24FF00",font=("Arial",20,"bold"))
+            
             self.label_prediccion.pack()
-            self.ban_show_img_IMG == True
+            self.label_imagen.pack()
+            self.ban_show_img_IMG = True
 
 if __name__ == "__main__":
     app = VentanaPrincipal()
