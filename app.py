@@ -1,3 +1,4 @@
+import tkinter as tk
 import customtkinter as ctk
 class VentanaPrincipal():
     def __init__(self) -> None:
@@ -19,13 +20,14 @@ class VentanaPrincipal():
         self.btn_dfURL.pack()
         self.btn_dfIMG = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE IMAGEN",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_img)
         self.btn_dfIMG.pack()
-        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),state=ctk.DISABLED)
+        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),state= "disable")
         self.btn_dfEVAL.pack()
         #Bucle repetetivo para ejecutar el código tkinter
         self.window.mainloop()
     
     def func_verify_url(self):
         if self.ban_url_controller == False:
+            self.btn_dfEVAL._state = "normal"
             self.frame_url = ctk.CTkFrame(self.window)
             self.frame_url.pack(pady=20)
             self.lb_URL = ctk.CTkLabel(self.frame_url,text='INSERTE EL URL AQUÍ',text_color="red",font=("Arial",15,"bold"))
@@ -40,6 +42,7 @@ class VentanaPrincipal():
     
     def func_verify_img(self):
         if self.ban_img_controller == False:
+            self.btn_dfEVAL._state = "normal"
             self.frame_img = ctk.CTkFrame(self.window)
             self.frame_img.pack()
             self.lb_IMG = ctk.CTkLabel(self.frame_img,text='LA IMAGEN DEBE ESTAR EN FORMATO .JPG',text_color="red",font=("Arial",15,"bold"))
