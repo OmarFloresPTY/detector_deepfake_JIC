@@ -34,8 +34,8 @@ class VentanaPrincipal():
         self.btn_dfURL.pack()
         self.btn_dfIMG = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE IMAGEN",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_img)
         self.btn_dfIMG.pack()
-        self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
-        self.btn_dfEVAL.pack()
+        #self.btn_dfEVAL = ctk.CTkButton(self.window,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
+        #self.btn_dfEVAL.pack()
         #Bucle repetetivo para ejecutar el código tkinter
         self.window.mainloop()
     
@@ -52,7 +52,10 @@ class VentanaPrincipal():
         if self.ban_img_controller == True:
             self.frame_img.pack_forget()
             self.ban_img_controller = False
-    
+
+        self.btn_dfEVAL_URL = ctk.CTkButton(self.frame_url,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_URL)
+        self.btn_dfEVAL_URL.pack()
+
     def func_verify_img(self):
         if self.ban_img_controller == False:
             self.frame_img = ctk.CTkFrame(self.window)
@@ -66,10 +69,11 @@ class VentanaPrincipal():
         if self.ban_url_controller == True:
             self.frame_url.pack_forget()
             self.ban_url_controller = False
-    
+        self.btn_dfEVAL_IMG = ctk.CTkButton(self.frame_img,text="EVALUAR DEEPFAKE",text_color="white",width=600,font=("Arial",15,"bold"),command=self.mostrar_imagen_IMG)
+        self.btn_dfEVAL_IMG.pack()
+        
     def obtener_ruta_IMG(self):
         self.ruta_archivo = filedialog.askopenfilename()
-
 
     def categorizar_URL(self, url, modelo):
         self.respuesta = requests.get(self.url)
@@ -114,12 +118,10 @@ class VentanaPrincipal():
         return np.argmax(self.prediccion[0],axis=-1)
     
     def mostrar_imagen_IMG(self):
-
         if self.ban_show_img_IMG == False:
             if self.frame_img_show_model_IMG is not None:
                 self.frame_img_show_model_IMG.destroy()
                 self.ban_show_img_IMG = False
-
 
             self.frame_img_show_model_IMG = ctk.CTkFrame(self.window)
             self.frame_img_show_model_IMG.pack()
