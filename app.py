@@ -88,6 +88,7 @@ class VentanaPrincipal():
         self.ruta_archivo = filedialog.askopenfilename()
 
     def categorizar_URL(self, url, modelo):
+        self.url = url
         self.respuesta = requests.get(self.url)
         self.img = Image.open(BytesIO(self.respuesta.content))
         self.img = np.array(self.img).astype(float)/255
@@ -126,6 +127,8 @@ class VentanaPrincipal():
             self.ban_show_img_URL = True
 
     def categorizar_IMG(self, imagen, modelo):
+        self.imagen = imagen
+        self.modelo = modelo
         self.img = np.array(self.imagen).astype(float)/255
         self.img = cv2.resize(self.img,(224,224))
         self.prediccion = self.modelo.predict(self.img.reshape(-1,224,224,3))
