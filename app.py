@@ -20,6 +20,7 @@ class VentanaPrincipal():
         self.window = ctk.CTk()
         self.window.title('V.1.0.-Jornada de Iniciación Científica 2023')
         self.window.geometry('1000x600')
+        self.window.iconbitmap('logo.ico')
         self.lb_TITLE = ctk.CTkLabel(self.window,text='PROTOTIPO DETECTOR DEEPFAKE',text_color="white",font=("Arial",30,"bold"))
         self.lb_TITLE.pack(pady=(10,40))
         self.btn_dfURL = ctk.CTkButton(self.window,text="DETECTAR DEEPFAKE URL",text_color="white",width=600,font=("Arial",15,"bold"),command=self.func_verify_url)
