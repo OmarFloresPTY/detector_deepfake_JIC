@@ -7,7 +7,7 @@
 ¿Qué necesitas para probar el prototipo?
 1. **_Si no eres Programador (Método Fácil) (Video Tutorial incluido)_**:
 * Descarga el ejecutable .exe del prototipo desde [Mega](https://mega.nz/file/dL8AnIZK#UgkYFeWFhivBebtw2MRT1XFQE1hYRze_yH9BHjnq5sc).
-* Ver tutorial explicativo para probar el prototipo [Youtube](hhttps://youtu.be/Cu3Os2RIxmU)
+* Ver tutorial explicativo para probar el prototipo [Youtube](https://youtu.be/Cu3Os2RIxmU)
 2. **_Si eres Programador_**:
 * Clona el repositorio en tu computador.
 ```
