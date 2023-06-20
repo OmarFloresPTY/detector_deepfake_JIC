@@ -5,8 +5,11 @@
 
 ## **Pre-requisitos e Instalación** 💻
 ¿Qué necesitas para probar el prototipo?
-1. **_Si no eres Programador (Método Fácil)_**:
+1. **_Si no eres Programador (Método Fácil) (Video Tutorial incluido)_**:
 * Descarga el ejecutable .exe del prototipo desde [Mega](https://mega.nz/file/dL8AnIZK#UgkYFeWFhivBebtw2MRT1XFQE1hYRze_yH9BHjnq5sc).
+* Ver tutorial explicativo para probar el prototipo.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/QqAeUPVFJy0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 2. **_Si eres Programador_**:
 * Clona el repositorio en tu computador.
