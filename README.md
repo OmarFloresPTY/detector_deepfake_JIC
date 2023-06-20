@@ -4,7 +4,7 @@
  El proyecto implica la construcción de una aplicación basada en Python que utiliza el modelo pre-entrenado Mobilenetv2 para identificar imágenes falsas, específicamente DeepFakes, en el contexto panameño. A través de este proyecto, se busca generar conciencia sobre la importancia de la ciberseguridad, el cuidado de los datos personales y la lucha contra la desinformación, con el objetivo de proteger a las personas y las instituciones de los posibles riesgos asociados a la manipulación de imágenes.
 
 ## **Pre-requisitos e Instalación** 💻
-¿Que necesitas para probar el prototipo?
+¿Qué necesitas para probar el prototipo?
 1. **_Si no eres Programador (Método Fácil)_**:
 * Descarga el ejecutable .exe del prototipo desde [Mega](https://mega.nz/file/dL8AnIZK#UgkYFeWFhivBebtw2MRT1XFQE1hYRze_yH9BHjnq5sc).
 
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 * Ejecuta el programa.
 
 ## **Construido con 🛠️**
-A continuación de muestran las herramientas utilizadas para crear el proyecto.
+A continuación se muestran las herramientas utilizadas para crear el proyecto.
 
 <img src="https://i.ibb.co/1s0XknW/Tecnolog-as-Indentificadas-librer-as-principales.png" alt="Tecnolog-as-Indentificadas-librer-as-principales" border="5" />
 
@@ -38,7 +38,7 @@ Documentación oficial de cada herramienta:
 * [Keras](https://keras.io/)
 
 ## **Diseño Conceptual de la construcción del prototipo** 🗺️🧑‍💻
-Para entender un poco el flujo de prepración o elaboración del prototipo se presenta el siguiente gráfico:
+Para entender un poco el flujo de preparación o elaboración del prototipo se presenta el siguiente gráfico:
 <img src="https://i.ibb.co/4f7C5n6/Diagrama-Conceptual.png" alt="Diagrama-Conceptual" border="0" />
 
 ### *_Algunas Características adicionales del prototipo_*:
