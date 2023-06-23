@@ -83,7 +83,7 @@ A continuación se presentarán las diferentes salidas que otorga el sistema al 
 <img src="https://i.ibb.co/cDqgwy5/widget03.png" alt="widget03" border="0" />
 
 ### **Frame No.3 salida de la evaluación al usuario, label e imagen**
-<a href="https://ibb.co/WK2Q12V"><img src="https://i.ibb.co/VBqd8qw/Prototipo-1.png" alt="Prototipo-1" border="0" /></a>
+<img src="https://i.ibb.co/VBqd8qw/Prototipo-1.png" alt="Prototipo-1" border="0" />
 
 ## Autores ✒️
 En el proyecto participaron los siguientes autores.
